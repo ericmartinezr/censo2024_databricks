@@ -1,0 +1,1061 @@
+{
+  "datasets": [
+    {
+      "name": "641dc4a1",
+      "displayName": "censo_2024_completo",
+      "config": {
+        "version": "1.1",
+        "source": "genie_catalog.default.censo_2024_completo",
+        "dimensions": [
+          {
+            "name": "region_nombre",
+            "expr": "COALESCE(source.region_nombre, 'N/A')",
+            "displayName": "Región"
+          },
+          {
+            "name": "sexo_desc",
+            "expr": "COALESCE(source.sexo_desc, 'N/A')",
+            "displayName": "Género"
+          },
+          {
+            "name": "edad",
+            "expr": "source.edad",
+            "displayName": "Edad"
+          },
+          {
+            "name": "area_desc",
+            "expr": "COALESCE(source.area_desc, 'N/A')",
+            "displayName": "Tipo de Área"
+          },
+          {
+            "name": "estado_civil_desc",
+            "expr": "COALESCE(source.estado_civil_desc, 'N/A')",
+            "displayName": "Estado Civil"
+          },
+          {
+            "name": "sit_fuerza_trabajo_desc",
+            "expr": "COALESCE(source.sit_fuerza_trabajo_desc, 'N/A')",
+            "displayName": "Estado Laboral"
+          },
+          {
+            "name": "tenencia_vivienda_desc",
+            "expr": "COALESCE(source.tenencia_vivienda_desc, 'N/A')",
+            "displayName": "Tenencia de Vivienda"
+          },
+          {
+            "name": "nacionalidad_desc",
+            "expr": "COALESCE(source.nacionalidad_desc, 'N/A')",
+            "displayName": "Nacionalidad"
+          },
+          {
+            "name": "autoid_pueblo_desc",
+            "expr": "COALESCE(source.autoid_pueblo_desc, 'N/A')",
+            "displayName": "Identidad Indígena"
+          },
+          {
+            "name": "discapacidad_desc",
+            "expr": "COALESCE(source.discapacidad_desc, 'N/A')",
+            "displayName": "Estado de Discapacidad"
+          },
+          {
+            "name": "servicio_internet_fija_desc",
+            "expr": "COALESCE(source.servicio_internet_fija_desc, 'N/A')",
+            "displayName": "Internet Fija"
+          },
+          {
+            "name": "servicio_internet_movil_desc",
+            "expr": "COALESCE(source.servicio_internet_movil_desc, 'N/A')",
+            "displayName": "Internet Móvil"
+          },
+          {
+            "name": "servicio_internet_satelital_desc",
+            "expr": "COALESCE(source.servicio_internet_satelital_desc, 'N/A')",
+            "displayName": "Internet Satelital"
+          },
+          {
+            "name": "indice_hacinamiento_desc",
+            "expr": "COALESCE(source.indice_hacinamiento_desc, 'N/A')",
+            "displayName": "Índice de Hacinamiento"
+          }
+        ],
+        "measures": [
+          {
+            "name": "total_population",
+            "expr": "COUNT(*)",
+            "displayName": "Población Total"
+          },
+          {
+            "name": "poblacion",
+            "expr": "COUNT(*)",
+            "displayName": "Población"
+          },
+          {
+            "name": "total_households",
+            "expr": "COUNT(DISTINCT CONCAT(CAST(source.id_vivienda AS STRING), '-', CAST(source.id_hogar AS STRING)))",
+            "displayName": "Total Hogares"
+          },
+          {
+            "name": "total_dwellings",
+            "expr": "COUNT(DISTINCT source.id_vivienda)",
+            "displayName": "Total Viviendas"
+          },
+          {
+            "name": "avg_persons_per_household",
+            "expr": "CAST(COUNT(*) AS DOUBLE) / NULLIF(COUNT(DISTINCT CONCAT(CAST(source.id_vivienda AS STRING), '-', CAST(source.id_hogar AS STRING))), 0)",
+            "displayName": "Promedio Personas por Hogar"
+          }
+        ]
+      }
+    }
+  ],
+  "pages": [
+    {
+      "name": "ae83af6c",
+      "displayName": "Análisis demográfico",
+      "layout": [
+        {
+          "widget": {
+            "name": "header",
+            "multilineTextboxSpec": {
+              "lines": [
+                "## Censo Chile 2024 - Análisis Demográfico Integral\n",
+                "\n",
+                "Este dashboard proporciona una visión detallada del panorama demográfico de Chile basado en los datos del censo 2024. Explore la distribución de población por región, género, edad, áreas urbanas/rurales, estado civil, participación laboral, características de vivienda, nacionalidad, identidad indígena, estado de discapacidad y patrones de acceso a internet."
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "counter_population",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(total_population)",
+                      "expression": "MEASURE(`total_population`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Población Total",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_population)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "counter_households",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(total_households)",
+                      "expression": "MEASURE(`total_households`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Total Hogares",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_households)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 3,
+            "y": 2,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "counter_dwellings",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(total_dwellings)",
+                      "expression": "MEASURE(`total_dwellings`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Total Viviendas",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(total_dwellings)"
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 2,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "counter_avg_persons",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(avg_persons_per_household)",
+                      "expression": "MEASURE(`avg_persons_per_household`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "title": "Promedio Personas por Hogar",
+                "showTitle": true
+              },
+              "widgetType": "counter",
+              "encodings": {
+                "value": {
+                  "fieldName": "measure(avg_persons_per_household)",
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "exact",
+                      "places": 2
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 9,
+            "y": 2,
+            "width": 3,
+            "height": 3
+          }
+        },
+        {
+          "widget": {
+            "name": "pop_by_region",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(poblacion)",
+                      "expression": "MEASURE(`poblacion`)"
+                    },
+                    {
+                      "name": "region_nombre",
+                      "expression": "`region_nombre`"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "ASC",
+                      "expression": "MEASURE(`poblacion`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Población por Región",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "measure(poblacion)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "region_nombre",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure",
+                      "measure": {
+                        "fieldName": "measure(poblacion)"
+                      }
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 5,
+            "width": 12,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "gender_dist",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(poblacion)",
+                      "expression": "MEASURE(`poblacion`)"
+                    },
+                    {
+                      "name": "sexo_desc",
+                      "expression": "`sexo_desc`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Distribución por Género",
+                "showTitle": true
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "measure(poblacion)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "sexo_desc",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true,
+                  "text": {
+                    "fieldName": "sexo_desc"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 10,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "urban_rural",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "area_desc",
+                      "expression": "`area_desc`"
+                    },
+                    {
+                      "name": "measure(poblacion)",
+                      "expression": "MEASURE(`poblacion`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Distribución Urbano vs Rural",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "area_desc",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(poblacion)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 10,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "marital_status",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "estado_civil_desc",
+                      "expression": "`estado_civil_desc`"
+                    },
+                    {
+                      "name": "measure(poblacion)",
+                      "expression": "MEASURE(`poblacion`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`poblacion`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Estado Civil",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "estado_civil_desc",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(poblacion)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(poblacion)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 15,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "labor_force",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(poblacion)",
+                      "expression": "MEASURE(`poblacion`)"
+                    },
+                    {
+                      "name": "sit_fuerza_trabajo_desc",
+                      "expression": "`sit_fuerza_trabajo_desc`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Participación en Fuerza Laboral",
+                "showTitle": true
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "measure(poblacion)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "sit_fuerza_trabajo_desc",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true,
+                  "text": {
+                    "fieldName": "sit_fuerza_trabajo_desc"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 15,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "housing_tenure",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "tenencia_vivienda_desc",
+                      "expression": "`tenencia_vivienda_desc`"
+                    },
+                    {
+                      "name": "measure(total_households)",
+                      "expression": "MEASURE(`total_households`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_households`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Tenencia de Vivienda",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "tenencia_vivienda_desc",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_households)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_households)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 20,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "top_nationalities",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(poblacion)",
+                      "expression": "MEASURE(`poblacion`)"
+                    },
+                    {
+                      "name": "nacionalidad_desc",
+                      "expression": "`nacionalidad_desc`"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "ASC",
+                      "expression": "MEASURE(`poblacion`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Top 10 Nacionalidades",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "measure(poblacion)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "y": {
+                  "fieldName": "nacionalidad_desc",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure",
+                      "measure": {
+                        "fieldName": "measure(poblacion)"
+                      }
+                    }
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 20,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "indigenous_identity",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(poblacion)",
+                      "expression": "MEASURE(`poblacion`)"
+                    },
+                    {
+                      "name": "autoid_pueblo_desc",
+                      "expression": "`autoid_pueblo_desc`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Identidad Indígena",
+                "showTitle": true
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "measure(poblacion)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "autoid_pueblo_desc",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true,
+                  "text": {
+                    "fieldName": "autoid_pueblo_desc"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 25,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "disability",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "discapacidad_desc",
+                      "expression": "`discapacidad_desc`"
+                    },
+                    {
+                      "name": "measure(poblacion)",
+                      "expression": "MEASURE(`poblacion`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`poblacion`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Estado de Discapacidad",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "discapacidad_desc",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(poblacion)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(poblacion)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 25,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "internet_fixed",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "servicio_internet_fija_desc",
+                      "expression": "`servicio_internet_fija_desc`"
+                    },
+                    {
+                      "name": "measure(total_households)",
+                      "expression": "MEASURE(`total_households`)"
+                    }
+                  ],
+                  "disaggregated": false,
+                  "orders": [
+                    {
+                      "direction": "DESC",
+                      "expression": "MEASURE(`total_households`)"
+                    }
+                  ]
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Acceso a Internet Fija (Hogares)",
+                "showTitle": true
+              },
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "servicio_internet_fija_desc",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "measure-reversed",
+                      "measure": {
+                        "fieldName": "measure(total_households)"
+                      }
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "measure(total_households)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 30,
+            "width": 6,
+            "height": 5
+          }
+        },
+        {
+          "widget": {
+            "name": "overcrowding",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "641dc4a1",
+                  "fields": [
+                    {
+                      "name": "measure(total_households)",
+                      "expression": "MEASURE(`total_households`)"
+                    },
+                    {
+                      "name": "indice_hacinamiento_desc",
+                      "expression": "`indice_hacinamiento_desc`"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "title": "Índice de Hacinamiento (Hogares)",
+                "showTitle": true
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "measure(total_households)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "indice_hacinamiento_desc",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "label": {
+                  "show": true,
+                  "text": {
+                    "fieldName": "indice_hacinamiento_desc"
+                  }
+                }
+              },
+              "data": {
+                "queryName": "main_query"
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 30,
+            "width": 6,
+            "height": 5
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "fontColor": {
+        "light": "#1F272D",
+        "dark": "#FFFFFF"
+      },
+      "visualizationColors": [
+        "#1f77b4",
+        "#ff7f0e",
+        "#2ca02c",
+        "#d62728",
+        "#9467bd",
+        "#8c564b",
+        "#e377c2",
+        "#7f7f7f",
+        "#bcbd22",
+        "#17becf",
+        "#aec7e8",
+        "#ffbb78",
+        "#98df8a",
+        "#ff9896",
+        "#c5b0d5",
+        "#c49c94"
+      ],
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED",
+      "fontFamily": "Inter",
+      "widgetPadding": 12,
+      "widgetMargin": 8,
+      "widgetCornerRadius": 8,
+      "widgetShadow": 10,
+      "fontSettings": {
+        "base": {
+          "fontFamily": "Inter",
+          "fontSize": 13,
+          "fontWeight": 400
+        },
+        "widgetTitle": {
+          "fontFamily": "Inter",
+          "fontSize": 16,
+          "fontWeight": 600
+        }
+      }
+    },
+    "applyModeEnabled": false
+  }
+}
